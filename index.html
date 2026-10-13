@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grace — a midlife wellness company for Europe</title>
+<meta name="description" content="Six physician-guided supplements plus an eight-pillar lifestyle membership led by a doctor. Business plan, costs, timeline and an honest success score.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Jost:wght@300;400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#f7f8f7; --white:#ffffff; --ink:#15201d; --ink2:#4f5c58; --line:#dde3e0;
+    --teal:#2f6b5e; --teal-soft:#e4efeb; --gold:#b48a3c;
+    --h: Fraunces, Georgia, serif; --b: Jost, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--b);font-weight:300;color:var(--ink);background:var(--paper);line-height:1.6;font-size:17px}
+  a{color:var(--teal)}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  h1,h2,h3{font-family:var(--h);font-weight:300;line-height:1.1;margin:0 0 .4em;letter-spacing:-.01em}
+  h1{font-size:clamp(40px,7vw,76px)}
+  h2{font-size:clamp(30px,4.5vw,46px)}
+  h3{font-size:24px;font-weight:500;font-family:var(--b);letter-spacing:0}
+  p{margin:0 0 1em;max-width:62ch}
+  strong{font-weight:500}
+  section{padding:72px 0;border-top:1px solid var(--line)}
+  .lede{font-size:21px;color:var(--ink2);max-width:58ch}
+  nav{position:sticky;top:0;background:rgba(247,248,247,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:5}
+  nav .wrap{display:flex;gap:20px;align-items:center;height:56px;overflow-x:auto;white-space:nowrap}
+  nav a{color:var(--ink2);text-decoration:none;font-size:14px;font-weight:400}
+  nav a.brand{font-family:var(--h);font-size:20px;color:var(--ink);margin-right:auto;letter-spacing:.08em}
+  header.hero{padding:88px 0 64px}
+  .score-chip{display:inline-flex;align-items:baseline;gap:10px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:10px 18px;margin-top:22px}
+  .score-chip b{font-family:var(--h);font-size:34px;font-weight:500;color:var(--teal)}
+  .grid{display:grid;gap:18px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .card h3{margin-top:0}
+  .product{border-top:6px solid var(--c, var(--teal))}
+  .product .sub{color:var(--ink2);margin-bottom:10px}
+  .product .ing{font-size:15px;margin-bottom:12px}
+  .pill{display:inline-block;font-size:12px;font-weight:500;background:var(--teal-soft);color:var(--teal);border-radius:999px;padding:3px 10px;margin:2px 4px 2px 0}
+  table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:15px}
+  th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-weight:500;background:var(--teal-soft)}
+  tr:last-child td{border-bottom:0}
+  td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .tablewrap{overflow-x:auto}
+  .timeline{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+  .timeline li{display:grid;grid-template-columns:120px 1fr;gap:16px;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .timeline li span{font-weight:500;color:var(--teal)}
+  .scorebar{height:10px;background:var(--line);border-radius:999px;overflow:hidden;margin:6px 0 4px}
+  .scorebar i{display:block;height:100%;background:var(--teal)}
+  .scorerow{display:grid;grid-template-columns:1fr 60px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+  .scorerow:last-child{border-bottom:0}
+  .scorerow b{font-family:var(--h);font-size:26px;font-weight:500;text-align:right}
+  .verdict{background:var(--ink);color:#f3f6f4;border-radius:18px;padding:34px}
+  .verdict h2{color:#fff}
+  .verdict p{color:#cfd8d4}
+  .verdict .big{font-family:var(--h);font-size:92px;font-weight:500;line-height:1;color:#fff}
+  .verdict .big small{font-size:30px;color:#9fb3ab}
+  .note{font-size:14px;color:var(--ink2)}
+  footer{padding:40px 0;color:var(--ink2);font-size:14px}
+  .cta{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;padding:12px 20px;border-radius:999px;font-weight:500;font-size:15px}
+  @media (max-width:560px){.timeline li{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top">GRACE</a>
+  <a href="#idea">Idea</a><a href="#products">Products</a><a href="#program">Program</a><a href="#model">Model</a><a href="#costs">Costs</a><a href="#timeline">Timeline</a><a href="#score">Score</a><a href="render.html">3D render</a>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+  <h1>A midlife wellness company, not a supplement shop.</h1>
+  <p class="lede">Six clean, physician-formulated supplements for women in perimenopause and menopause — and the thing no competitor in Europe sells with them: a doctor-led lifestyle membership that teaches the other seven things the capsule can't do.</p>
+  <div class="score-chip"><span>Chance of success</span><b>5<small>/10</small></b><span class="note">— honest breakdown below</span></div>
+</div></header>
+
+<section id="idea"><div class="wrap">
+  <h2>The idea</h2>
+  <p>Menopause care in Europe is thin. A woman gets a short GP appointment and a yes or no on hormone therapy. If she wants something gentler, or alongside, she's left to a supermarket shelf and an internet full of contradictory advice. Meanwhile the US market has shown that <strong>brand + doctor + program</strong> is what people will pay for, and pay for monthly.</p>
+  <p>Grace puts those three together for the German-speaking market first: a small, coherent product line, a named physician who explains how each product works and when it won't, and a membership built around eight pillars of daily living — because a magnesium capsule does very little for someone who drinks wine at 10 p.m. and sleeps in a warm room.</p>
+  <div class="grid g3" style="margin-top:28px">
+    <div class="card"><h3>The product is the entry</h3><p>Every bottle includes the free tier of the program. The bottle is the membership card.</p></div>
+    <div class="card"><h3>The doctor is the moat</h3><p>Dr. Alina answers questions, teaches one pillar a week live, and is bookable 1:1. Nobody copies that by copying an ingredient list.</p></div>
+    <div class="card"><h3>Europe-native from day one</h3><p>EU food-supplement rules, EU wording, EU manufacturing, German-language content. Not a US brand translated.</p></div>
+  </div>
+</div></section>
+
+<section id="products"><div class="wrap">
+  <h2>Six products</h2>
+  <p class="lede">Each one maps to the pillars it depends on. That mapping is the philosophy: we tell you when the capsule isn't the answer.</p>
+  <div class="grid g2" style="margin-top:28px">
+    <div class="card product" style="--c:#2f6b5e"><h3>Hormone Balance</h3><div class="sub">Hot flashes, night sweats, mood, brain fog</div><div class="ing">Red clover isoflavones · Sage leaf · Black cohosh · Vitex · Magnesium glycinate · B6, B12</div><span class="pill">Rest</span><span class="pill">Nutrition</span><span class="pill">Temperance</span></div>
+    <div class="card product" style="--c:#8a3a52"><h3>Libido &amp; Vitality</h3><div class="sub">Desire, comfort and sexual wellness</div><div class="ing">Maca · Ginseng · L-arginine · Tribulus · Hyaluronic acid · Zinc</div><span class="pill">Exercise</span><span class="pill">Rest</span><span class="pill">Trust</span></div>
+    <div class="card product" style="--c:#b07a2a"><h3>Bone &amp; Joint</h3><div class="sub">Bone density and joint comfort</div><div class="ing">Calcium citrate · Vitamin K2 · Vitamin D3 · Magnesium · Boron · Collagen peptides</div><span class="pill">Sunlight</span><span class="pill">Exercise</span></div>
+    <div class="card product" style="--c:#1f7a8c"><h3>Metabolism &amp; Energy</h3><div class="sub">Metabolic balance after menopause</div><div class="ing">Green tea EGCG · Chromium · CoQ10 · L-carnitine · B-complex · Ginger</div><span class="pill">Nutrition</span><span class="pill">Exercise</span><span class="pill">Water</span></div>
+    <div class="card product" style="--c:#c96a5d"><h3>Skin, Hair &amp; Collagen</h3><div class="sub">Collagen renewal from within</div><div class="ing">Marine collagen · Hyaluronic acid · Biotin · Vitamin C · Silica · Astaxanthin</div><span class="pill">Water</span><span class="pill">Nutrition</span><span class="pill">Sunlight</span></div>
+    <div class="card product" style="--c:#5b4e8c"><h3>Stress &amp; Sleep</h3><div class="sub">Calm days, restorative nights</div><div class="ing">Ashwagandha · Rhodiola · Magnesium threonate · Passionflower · Valerian · L-theanine</div><span class="pill">Rest</span><span class="pill">Air</span><span class="pill">Trust</span></div>
+  </div>
+  <p class="note" style="margin-top:18px">Ingredient lists are the concept. Doses, forms and interactions to be set by the physician and a formulation partner. Launch with two SKUs (Hormone Balance, Stress &amp; Sleep), add the rest as demand proves out. <a href="render.html">Rotate the concept bottles →</a></p>
+</div></section>
+
+<section id="program"><div class="wrap">
+  <h2>The program</h2>
+  <p class="lede">An always-on membership built on eight pillars — nutrition, exercise, water, sunlight, temperance, air, rest, trust — written for midlife specifically, led by a doctor.</p>
+  <div class="grid g2" style="margin-top:28px">
+    <div class="card"><h3>Pillar library</h3><p>Short lessons per pillar. Not generic wellness: "temperance at 52" is about alcohol and caffeine timing and night sweats, not abstract virtue.</p></div>
+    <div class="card"><h3>Dr. Alina live, weekly</h3><p>One open session a week. Twenty minutes on a pillar, then questions. Recorded — the library builds itself. One hour of her time, hundreds of members.</p></div>
+    <div class="card"><h3>Ask the doctor</h3><p>Written questions answered in batches. Scales far better than 1:1 and the answers become content.</p></div>
+    <div class="card"><h3>1:1 telehealth</h3><p>Bookable video consultations. Pay per session, or included monthly at the top tier. This is the premium layer and the one that needs the most legal care.</p></div>
+    <div class="card"><h3>Daily practice</h3><p>A small daily prompt tied to the pillar you're working on. Push notification, two minutes.</p></div>
+    <div class="card"><h3>The circle</h3><p>A members' community. Women in this transition are often isolated in it; this is where retention lives.</p></div>
+  </div>
+  <div class="tablewrap" style="margin-top:28px"><table>
+    <tr><th></th><th>With any purchase</th><th>Membership</th><th>With Dr. Alina</th></tr>
+    <tr><td>Pillar library</td><td>✓</td><td>✓</td><td>✓</td></tr>
+    <tr><td>Weekly live session</td><td>Replay</td><td>Live + replay</td><td>Live + replay</td></tr>
+    <tr><td>Ask the doctor</td><td>—</td><td>✓</td><td>✓</td></tr>
+    <tr><td>1:1 consultation</td><td>Per session</td><td>Per session</td><td>Included monthly</td></tr>
+    <tr><td>Price</td><td>Free</td><td>€19 / month</td><td>€99 / month</td></tr>
+  </table></div>
+</div></section>
+
+<section id="model"><div class="wrap">
+  <h2>Business model</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Revenue lines</h3>
+      <p><strong>Supplements</strong> at €39–49 per bottle, 20% off on subscription. Landed cost around €7–10 per unit at small volume, so roughly 75–80% gross margin before marketing.</p>
+      <p><strong>Membership</strong> at €19 and €99. Near-zero marginal cost on the €19 tier; the €99 tier is capped by the doctor's hours.</p>
+      <p><strong>Consultations</strong> at €90–140 per 30 minutes, revenue-shared with the physician.</p></div>
+    <div class="card"><h3>What the numbers need to look like</h3>
+      <p>A member on two bottles plus the €19 tier is about <strong>€95 a month</strong> in revenue. At 300 such members the business is roughly €340k a year and can pay a part-time doctor, a part-time facilitator and the founders something.</p>
+      <p>Direct-to-consumer acquisition in supplements is expensive — expect €40–80 to acquire a customer. The program is what justifies that: it turns a €45 one-off sale into a multi-month relationship.</p></div>
+  </div>
+  <h3 style="margin-top:34px">Go-to-market</h3>
+  <p>Switzerland and Germany first, German and English. Channels, in order of expected return: Dr. Alina's own practice and referral network; midlife women's communities and podcasts; search content around specific symptoms; paid social only once organic conversion is understood. Pharmacies and practitioners as a second phase — Switzerland in particular sells wellness through the Apotheke.</p>
+</div></section>
+
+<section id="costs"><div class="wrap">
+  <h2>Cost to launch</h2>
+  <p class="lede">Estimates for a lean, serious launch: two products, program live, one country. Euros.</p>
+  <div class="tablewrap" style="margin-top:24px"><table>
+    <tr><th>Item</th><th>What it covers</th><th style="text-align:right">Lean</th><th style="text-align:right">Full (6 SKUs)</th></tr>
+    <tr><td>Formulation &amp; regulatory</td><td>Formulator, EU novel-food and dose checks, label compliance review</td><td class="num">8 000</td><td class="num">15 000</td></tr>
+    <tr><td>First production run</td><td>EU private-label manufacturer, 500–1 000 units per SKU, GMP</td><td class="num">12 000</td><td class="num">35 000</td></tr>
+    <tr><td>Lab testing</td><td>Identity, purity, heavy metals, microbial, stability</td><td class="num">4 000</td><td class="num">10 000</td></tr>
+    <tr><td>Packaging &amp; design</td><td>Label artwork, bottle sourcing, product photography</td><td class="num">3 000</td><td class="num">6 000</td></tr>
+    <tr><td>Notifications</td><td>Food-supplement notification in CH, DE (BVL), AT</td><td class="num">2 000</td><td class="num">5 000</td></tr>
+    <tr><td>Legal</td><td>Company, physician agreement, telehealth licensing review, GDPR, terms</td><td class="num">8 000</td><td class="num">15 000</td></tr>
+    <tr><td>Product liability insurance</td><td>Annual</td><td class="num">2 500</td><td class="num">4 000</td></tr>
+    <tr><td>Platform</td><td>Shop, membership, video, scheduling — built in-house, SaaS fees</td><td class="num">3 000</td><td class="num">6 000</td></tr>
+    <tr><td>Program content</td><td>Pillar lessons, video production, German editing</td><td class="num">5 000</td><td class="num">10 000</td></tr>
+    <tr><td>Launch marketing</td><td>Content, creator seeding, first paid tests, samples</td><td class="num">12 000</td><td class="num">30 000</td></tr>
+    <tr><td>Working capital</td><td>Six months of fees, hosting, physician retainer</td><td class="num">15 000</td><td class="num">30 000</td></tr>
+    <tr><th>Total</th><th></th><th style="text-align:right">≈ €75 000</th><th style="text-align:right">≈ €165 000</th></tr>
+  </table></div>
+  <p class="note" style="margin-top:16px">The biggest variable is the manufacturer's minimum order. Some EU private-label houses will do 300 units; most want 1 000+. The platform line is low because the founder builds it.</p>
+</div></section>
+
+<section id="timeline"><div class="wrap">
+  <h2>Time to market</h2>
+  <p class="lede">Nine to twelve months to first sale on the lean path. The long pole is manufacturing lead time, not the website.</p>
+  <ul class="timeline" style="margin-top:24px">
+    <li><span>Month 0–1</span><div>Decide positioning with Grace and Dr. Alina. Name and trademark search. Company formed. Physician agreement drafted, including disclosure of commercial interest.</div></li>
+    <li><span>Month 1–3</span><div>Formulation with a partner. Dose and interaction review by the physician. Regulatory check of every ingredient against EU and Swiss lists (black cohosh, vitex and ashwagandha each have country-specific limits).</div></li>
+    <li><span>Month 3–4</span><div>Manufacturer selected, samples approved, label artwork finalised, notifications filed. Program content outlined; first weekly sessions run as a free pilot with a dozen women.</div></li>
+    <li><span>Month 4–8</span><div>Production run (typical lead time 10–16 weeks). Lab testing. Platform built: shop, membership, scheduling, video. Pillar library written and recorded.</div></li>
+    <li><span>Month 8–10</span><div>Soft launch to the pilot group and Dr. Alina's network. Fix what breaks. Collect the first testimonials you're allowed to use.</div></li>
+    <li><span>Month 10–12</span><div>Public launch in Switzerland. Germany follows once the notification and shipping are in place. Decide on SKUs three and four from real demand.</div></li>
+  </ul>
+</div></section>
+
+<section id="score"><div class="wrap">
+  <h2>Chance of success</h2>
+  <p class="lede">Scored honestly, 0–10, where "success" means a business that pays its people and still exists in three years. Averages hide the story, so here is each factor.</p>
+  <div class="card" style="margin-top:24px">
+    <div class="scorerow"><div><strong>Market need</strong><div class="scorebar"><i style="width:80%"></i></div><span class="note">Real and growing. Midlife women are underserved and increasingly vocal about it. Menopause is finally a mainstream topic in Europe.</span></div><b>8</b></div>
+    <div class="scorerow"><div><strong>Differentiation</strong><div class="scorebar"><i style="width:70%"></i></div><span class="note">The doctor-led program is genuinely rare in Europe. The supplements alone are not — the shelf is full.</span></div><b>7</b></div>
+    <div class="scorerow"><div><strong>Founder fit</strong><div class="scorebar"><i style="width:60%"></i></div><span class="note">Strong on platform, security and GDPR — unusual for a supplement founder. Weak on consumer marketing and supply chain; those have to be hired or learned.</span></div><b>6</b></div>
+    <div class="scorerow"><div><strong>The physician</strong><div class="scorebar"><i style="width:50%"></i></div><span class="note">The whole concept rests on one person's licensing, time and willingness to put her name on it. Not yet confirmed. Key-person risk is the largest single risk in the plan.</span></div><b>5</b></div>
+    <div class="scorerow"><div><strong>Regulatory path</strong><div class="scorebar"><i style="width:50%"></i></div><span class="note">Supplements are manageable. Telehealth across borders is not — licensing is national and conflicts of interest between prescribing and selling are scrutinised.</span></div><b>5</b></div>
+    <div class="scorerow"><div><strong>Unit economics</strong><div class="scorebar"><i style="width:40%"></i></div><span class="note">Margins are good; acquisition cost is the killer. Most D2C supplement brands die on marketing spend. The membership improves this but doesn't remove it.</span></div><b>4</b></div>
+    <div class="scorerow"><div><strong>Capital &amp; time</strong><div class="scorebar"><i style="width:30%"></i></div><span class="note">€75k and a year, run alongside a demanding full-time job and several other projects. Focus is the scarcest input here, scarcer than money.</span></div><b>3</b></div>
+  </div>
+  <div class="verdict" style="margin-top:28px">
+    <div class="big">5<small>/10</small></div>
+    <h2>A good idea that is mostly an execution bet.</h2>
+    <p>As a supplement brand alone this is a 3. The program and the doctor lift it to a 5, and a confirmed physician plus a successful 12-person pilot would lift it to a 6 or 7 before any money is spent on inventory. The single most valuable thing you can do next costs nothing: get Dr. Alina to say yes in writing, and run four weekly sessions with twelve women who are already in Grace's circle. If they come back for week four, build it. If they don't, you've saved €75 000.</p>
+    <a class="cta" href="#idea">Back to the idea</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  Concept document, October 2026. All ingredient lists, prices and estimates are planning figures, not offers. Supplements are food, not medicine, and nothing here is a health claim.
+</div></footer>
+
+</body>
+</html>

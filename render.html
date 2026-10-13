@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grace — product line render</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #eef0f1;
+    --panel: #ffffff;
+    --ink: #1c1f22;
+    --ink-2: #5b6167;
+    --line: #dfe3e6;
+    --accent: #2f6b5e;
+  }
+  :root:not([data-theme="light"]) { }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a1d20; --panel: #23272b; --ink: #f1f2f3; --ink-2: #a5abb1; --line: #34393e;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a1d20; --panel: #23272b; --ink: #f1f2f3; --ink-2: #a5abb1; --line: #34393e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: Jost, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg); color: var(--ink);
+    display: flex; flex-direction: column; min-height: 100vh;
+  }
+  header {
+    padding: 18px 22px 8px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  header h1 { margin: 0; font-size: 20px; font-weight: 500; letter-spacing: .02em; }
+  header p { margin: 0; color: var(--ink-2); font-size: 13px; }
+  #stage { flex: 1; min-height: 420px; position: relative; }
+  #stage canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+  #stage canvas:active { cursor: grabbing; }
+  .hint { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); font-size: 12px; color: var(--ink-2); pointer-events: none; }
+  nav {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px;
+    padding: 12px 22px 22px; border-top: 1px solid var(--line); background: var(--panel);
+  }
+  nav button {
+    font: inherit; font-size: 13px; font-weight: 500; text-align: left;
+    background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 10px;
+    padding: 10px 12px; cursor: pointer; display: flex; align-items: center; gap: 10px;
+  }
+  nav button span.dot { width: 14px; height: 14px; border-radius: 50%; flex: none; }
+  nav button[aria-pressed="true"] { border-color: var(--ink); }
+  nav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Grace — midlife wellness line</h1>
+  <p>Concept renders for review. Formulas and doses subject to validation.</p>
+</header>
+<div id="stage"><div class="hint">Drag to rotate</div></div>
+<nav id="nav" aria-label="Products"></nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const products = [
+  { key:'hormone', name:'Hormone Balance', sub:'Perimenopause and menopause support', ing:'Red clover · Sage leaf · Black cohosh · Vitex · Magnesium', accent:'#2f6b5e', accent2:'#8fb8ad' },
+  { key:'vitality', name:'Libido & Vitality', sub:'Desire, comfort and sexual wellness', ing:'Maca · Ginseng · L-arginine · Tribulus · Zinc', accent:'#8a3a52', accent2:'#d39fb0' },
+  { key:'bone', name:'Bone & Joint', sub:'Bone density and joint comfort', ing:'Calcium citrate · K2 · D3 · Magnesium · Boron', accent:'#b07a2a', accent2:'#e3c48c' },
+  { key:'metabolism', name:'Metabolism & Energy', sub:'Metabolic balance after menopause', ing:'Green tea EGCG · Chromium · CoQ10 · L-carnitine', accent:'#1f7a8c', accent2:'#96c7d1' },
+  { key:'skin', name:'Skin, Hair & Collagen', sub:'Collagen renewal from within', ing:'Marine collagen · Hyaluronic acid · Biotin · Vitamin C', accent:'#c96a5d', accent2:'#eeb8ad' },
+  { key:'sleep', name:'Stress & Sleep', sub:'Calm days, restorative nights', ing:'Ashwagandha · Rhodiola · Magnesium · Passionflower', accent:'#5b4e8c', accent2:'#b4abd6' },
+];
+
+/* ---------- label as a canvas texture ---------- */
+function makeLabel(p) {
+  const W = 2048, H = 1024;              // wraps around the cylinder
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+
+  // white label stock
+  g.fillStyle = '#fbfbfa'; g.fillRect(0, 0, W, H);
+
+  // front panel spans roughly x 0..900 (the camera faces this)
+  // curved accent sweep on the right side of the front panel
+  g.save();
+  g.beginPath();
+  g.moveTo(720, 0);
+  g.bezierCurveTo(640, 320, 700, 620, 930, 1024);
+  g.lineTo(W, 1024); g.lineTo(W, 0); g.closePath();
+  g.fillStyle = p.accent; g.fill();
+  // soft inner highlight band on the sweep
+  g.beginPath();
+  g.moveTo(760, 0);
+  g.bezierCurveTo(690, 320, 750, 620, 980, 1024);
+  g.lineTo(1040, 1024);
+  g.bezierCurveTo(800, 620, 740, 320, 810, 0); g.closePath();
+  g.fillStyle = p.accent2; g.globalAlpha = .35; g.fill();
+  g.restore();
+
+  // back-of-label small print area (seen when rotated)
+  g.fillStyle = '#fbfbfa'; g.fillRect(1180, 0, 700, H);
+  g.fillStyle = '#6a6f74'; g.font = '300 26px Jost';
+  const lines = [
+    'Food supplement. 60 capsules.',
+    'Take 2 capsules daily with food.',
+    'Do not exceed the stated dose.',
+    'Not a substitute for a varied diet.',
+    'Keep out of reach of children.',
+    'Consult a doctor if pregnant, nursing',
+    'or taking medication.',
+    '',
+    'Made in the EU. Vegan capsules.',
+    'Gluten free. No artificial colours.'
+  ];
+  lines.forEach((t, i) => g.fillText(t, 1230, 300 + i * 40));
+
+  // brand
+  g.fillStyle = p.accent; g.font = '500 44px Jost';
+  g.letterSpacing = '14px'; g.fillText('G R A C E', 120, 250);
+  g.letterSpacing = '0px';
+  g.fillStyle = '#9aa0a5'; g.font = '300 26px Jost';
+  g.fillText('midlife wellness', 120, 292);
+
+  // product name
+  g.fillStyle = '#1c1f22'; g.font = '600 118px Jost';
+  const words = p.name.split(' & ');
+  if (words.length > 1) { g.fillText(words[0] + ' &', 116, 470); g.fillText(words[1], 116, 590); }
+  else { const parts = p.name.split(' '); g.fillText(parts[0], 116, 470); g.fillText(parts.slice(1).join(' '), 116, 590); }
+
+  // subtitle ribbon
+  g.fillStyle = p.accent; roundRect(g, 120, 630, 560, 58, 8); g.fill();
+  g.fillStyle = '#ffffff'; g.font = '500 30px Jost'; g.fillText(p.sub.toUpperCase(), 140, 670);
+
+  // ingredients + format
+  g.fillStyle = '#3b4147'; g.font = '400 30px Jost'; g.fillText(p.ing, 120, 750);
+  g.fillStyle = '#1c1f22'; g.font = '600 34px Jost'; g.fillText('FOOD SUPPLEMENT', 120, 810);
+  g.fillStyle = '#5b6167'; g.font = '300 30px Jost'; g.fillText('60 capsules', 120, 850);
+
+  // badges
+  badge(g, 140, 930, p.accent, 'V', 'vegan');
+  badge(g, 340, 930, p.accent, 'GF', 'gluten free');
+  badge(g, 590, 930, p.accent, 'EU', 'made in Europe');
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.anisotropy = 8; tex.wrapS = THREE.RepeatWrapping; tex.offset.x = 0.62;
+  return tex;
+}
+function roundRect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+function badge(g, x, y, color, letter, text) {
+  g.beginPath(); g.arc(x, y, 24, 0, Math.PI * 2); g.fillStyle = color; g.fill();
+  g.fillStyle = '#fff'; g.font = '600 22px Jost'; g.textAlign = 'center'; g.fillText(letter, x, y + 8); g.textAlign = 'left';
+  g.fillStyle = '#3b4147'; g.font = '400 26px Jost'; g.fillText(text, x + 36, y + 9);
+}
+
+/* ---------- scene ---------- */
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+stage.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+camera.position.set(0, 1.6, 8.2); camera.lookAt(0, 1.55, 0);
+
+// studio lights
+scene.add(new THREE.HemisphereLight(0xffffff, 0xd9dde0, 0.55));
+const key = new THREE.DirectionalLight(0xffffff, 1.15); key.position.set(4, 7, 5); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 6; key.shadow.camera.near = 1; key.shadow.camera.far = 30;
+key.shadow.camera.left = -5; key.shadow.camera.right = 5; key.shadow.camera.top = 6; key.shadow.camera.bottom = -2;
+scene.add(key);
+const fill = new THREE.DirectionalLight(0xffffff, 0.45); fill.position.set(-5, 4, 3); scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffffff, 0.6); rim.position.set(0, 5, -6); scene.add(rim);
+
+// floor that only shows the shadow + a faint reflection
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.ShadowMaterial({ opacity: 0.16 }));
+floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+
+// bottle group
+const bottle = new THREE.Group(); scene.add(bottle);
+const plastic = new THREE.MeshPhysicalMaterial({ color: 0xf7f7f5, roughness: 0.42, metalness: 0, clearcoat: 0.35, clearcoatRoughness: 0.4 });
+
+const body = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 2.6, 96, 1, false), plastic);
+body.position.y = 1.5; body.castShadow = true; bottle.add(body);
+// shoulder
+const shoulder = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 1, 0.36, 96), plastic);
+shoulder.position.y = 2.98; shoulder.castShadow = true; bottle.add(shoulder);
+// neck + cap
+const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.22, 96), plastic);
+neck.position.y = 3.27; bottle.add(neck);
+const capMat = new THREE.MeshPhysicalMaterial({ color: 0xf2f2ef, roughness: 0.55, clearcoat: 0.2 });
+const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.72, 0.72, 0.5, 96), capMat);
+cap.position.y = 3.63; cap.castShadow = true; bottle.add(cap);
+// ribbed cap edge
+const ribs = new THREE.Mesh(new THREE.TorusGeometry(0.72, 0.03, 8, 96), capMat);
+ribs.rotation.x = Math.PI / 2; ribs.position.y = 3.86; bottle.add(ribs);
+// bottom bevel
+const base = new THREE.Mesh(new THREE.CylinderGeometry(1, 0.9, 0.22, 96), plastic);
+base.position.y = 0.11; base.castShadow = true; bottle.add(base);
+
+// label: slightly larger cylinder, open ended, paper-ish material
+const labelMat = new THREE.MeshStandardMaterial({ roughness: 0.7, metalness: 0 });
+const label = new THREE.Mesh(new THREE.CylinderGeometry(1.006, 1.006, 2.0, 128, 1, true), labelMat);
+label.position.y = 1.55; bottle.add(label);
+
+// drag to rotate
+let dragging = false, lastX = 0, vel = 0.004, targetRot = 0.35;
+bottle.rotation.y = targetRot;
+const el = renderer.domElement;
+el.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; el.setPointerCapture(e.pointerId); });
+el.addEventListener('pointermove', e => { if (!dragging) return; const dx = e.clientX - lastX; lastX = e.clientX; bottle.rotation.y += dx * 0.01; vel = dx * 0.002; });
+el.addEventListener('pointerup', () => dragging = false);
+el.addEventListener('pointercancel', () => dragging = false);
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function resize() {
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+function tick() {
+  if (!dragging) { if (!reduce) bottle.rotation.y += vel; vel += (0.003 - vel) * 0.02; }
+  renderer.render(scene, camera); requestAnimationFrame(tick);
+}
+
+/* ---------- product switcher ---------- */
+const nav = document.getElementById('nav');
+let current = null;
+function select(p, btn) {
+  if (labelMat.map) labelMat.map.dispose();
+  labelMat.map = makeLabel(p); labelMat.needsUpdate = true;
+  document.documentElement.style.setProperty('--accent', p.accent);
+  nav.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+  try { localStorage.setItem('grace-product', p.key); } catch (e) {}
+  current = p;
+}
+let saved = 'hormone'; try { saved = localStorage.getItem('grace-product') || 'hormone'; } catch (e) {}
+products.forEach(p => {
+  const b = document.createElement('button'); b.type = 'button';
+  b.innerHTML = '<span class="dot" style="background:' + p.accent + '"></span>' + p.name;
+  b.addEventListener('click', () => select(p, b)); nav.appendChild(b);
+  if (p.key === saved) b.dataset.initial = '1';
+});
+document.fonts.load('600 118px Jost').then(() => {
+  const b = nav.querySelector('[data-initial]') || nav.querySelector('button');
+  select(products.find(p => p.key === (b.dataset.initial ? saved : 'hormone')) || products[0], b);
+  tick();
+}).catch(() => { select(products[0], nav.querySelector('button')); tick(); });
+</script>
+</body>
+</html>
